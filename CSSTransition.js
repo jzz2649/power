@@ -1,14 +1,14 @@
 class CSSTransition {
     static nextRAF(callback){
         requestAnimationFrame(()=>{
-			requestAnimationFrame(callback)
+            requestAnimationFrame(callback);
         })
     }
     constructor(options={}){
         const must = ['el', 'className'];
         for(const key of must){
             if(!options.hasOwnProperty(key)){
-                throw new Error(`${key} can not be empty.`)
+                throw new Error(`${key} can not be empty.`);
             }
         }
         this.options = {
