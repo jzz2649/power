@@ -18,7 +18,6 @@ class CSSTransition {
             onExited(){}
         };
         Object.assign(this.options, options);
-        this.enter();
     }
     addClassName(status){
         const className = this.options.className + '-' + status;
@@ -52,8 +51,5 @@ class CSSTransition {
                 this.options.onExited();
             });
         })
-    }
-    remove(){
-        this.exit();
     }
 }
