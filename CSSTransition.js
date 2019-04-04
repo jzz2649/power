@@ -23,6 +23,12 @@ class CSSTransition {
         const className = this.options.className + '-' + status;
         this.options.el.classList.add(className);
     }
+    removeAllclass(){
+        const classNames = ['enter', 'enter-active', 'exit', 'exit-active'].map(status=>
+                this.options.className + '-' + status
+            );
+        this.options.el.classList.remove(...classNames);
+    }
     onCallback(callback){
         const allStyle = window.getComputedStyle(this.options.el);
         let duration = parseFloat(allStyle['transitionDuration']);
@@ -48,6 +54,7 @@ class CSSTransition {
         CSSTransition.nextRAF(()=>{
             this.addClassName('exit-active');
             this.onCallback(()=>{
+                this.removeAllclass();
                 this.options.onExited();
             });
         })
