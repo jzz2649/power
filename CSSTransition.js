@@ -23,8 +23,8 @@ class CSSTransition {
         const className = this.options.className + '-' + status;
         this.options.el.classList.add(className);
     }
-    removeAllclass(){
-        const classNames = ['enter', 'enter-active', 'exit', 'exit-active'].map(status=>
+    removeClassName(...statuss){
+        const classNames = statuss.map(status=>
                 this.options.className + '-' + status
             );
         this.options.el.classList.remove(...classNames);
@@ -44,6 +44,7 @@ class CSSTransition {
         CSSTransition.nextRAF(()=>{
             this.addClassName('enter-active');
             this.onCallback(()=>{
+                this.removeClassName('enter', 'enter-active');
                 this.options.onEntered();
             })
         })
@@ -54,7 +55,7 @@ class CSSTransition {
         CSSTransition.nextRAF(()=>{
             this.addClassName('exit-active');
             this.onCallback(()=>{
-                this.removeAllclass();
+                this.removeClassName('exit', 'exit-active');
                 this.options.onExited();
             });
         })
