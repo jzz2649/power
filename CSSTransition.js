@@ -35,7 +35,22 @@ class CSSTransition {
     }
     onCallback(callback){
         const allStyle = window.getComputedStyle(this.options.el);
-        let duration = parseFloat(allStyle['transitionDuration']);
+        const delays = allStyle['transitionDelay'].split(',').map(d=>{
+            const n = parseFloat(d);
+            if(Number.isNaN(n)){
+                return 0;
+            }
+            return n;
+        })
+        const durations = allStyle['transitionDuration'].split(',').map((d, i)=>{
+            const n = parseFloat(d);
+            const delay = delays[i];
+            if(Number.isNaN(n)){
+                return 0;
+            }
+            return n+delay;
+        });
+        let duration = Math.max(...durations);
         if(Number.isNaN(duration)){
             duration = 0;
         }
