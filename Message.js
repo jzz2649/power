@@ -80,7 +80,7 @@ class Message {
 		const csstransition = new CSSTransition({
 			el: item,
 			className: 'msg',
-			onEntering: enter,
+			onEnter: enter,
 			onExited: exit
 		})
 		csstransition.enter();

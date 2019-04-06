@@ -32,13 +32,13 @@
 		const animate = new CSSTransition({
 			el: show,
 			className: 'fade',
-			onEntering(){
+			onEnter(){
 				boxParent.appendChild(show);
 				has = true;
 			},
 			onEntered(){
 			},
-			onExiting(){
+			onExit(){
 				has = false;
 			},
 			onExited(){

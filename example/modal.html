@@ -75,17 +75,17 @@
 		const animateBox = new CSSTransition({
 			el: box,
 			className: 'box',
-			onEntering(){
+			onEnter(){
 				animateModal.enter();
 			},
-			onExiting(){
+			onExit(){
 				animateModal.exit();
 			}
 		})
 		const animateModal = new CSSTransition({
 			el: m,
 			className: 'm',
-			onEntering(){
+			onEnter(){
 				visible = true;
 				main.style.display = 'block';
 				btn.textContent = '关闭';

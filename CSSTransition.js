@@ -12,8 +12,10 @@ class CSSTransition {
             }
         }
         this.options = {
+            onEnter(){},
             onEntering(){},
             onEntered(){},
+            onExit(){},
             onExiting(){},
             onExited(){}
         };
@@ -49,10 +51,11 @@ class CSSTransition {
         }
         this._enterStatus = true;
         this.addClassName('enter');
-        this.options.onEntering();
+        this.options.onEnter();
         CSSTransition.nextRAF((status)=>{
             if(status){
                 this.addClassName('enter-active');
+                this.options.onEntering();
                 this._enterTimer = this.onCallback(()=>{
                     this.removeClassName('enter', 'enter-active');
                     this.options.onEntered();
@@ -70,10 +73,11 @@ class CSSTransition {
         }
         this._exitStatus = true;
         this.addClassName('exit');
-        this.options.onExiting();
+        this.options.onExit();
         CSSTransition.nextRAF((status)=>{
             if(status){
                 this.addClassName('exit-active');
+                this.options.onExiting();
                 this._exitTimer = this.onCallback(()=>{
                     this.removeClassName('exit', 'exit-active');
                     this.options.onExited();
