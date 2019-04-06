@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>toggle</title>
+	<script src="/Users/jzz/git/power/CSSTransition.js"></script>
+	<style>
+		.fade-enter {
+			opacity: 0;
+		}
+		.fade-enter-active{
+			opacity: 1;
+			transition: opacity .5s;
+		}
+		.fade-exit {
+			opacity: 1;
+		}
+		.fade-exit-active {
+			opacity: 0;
+			transition: opacity .5s;
+		}
+	</style>
+</head>
+<body>
+	<button id="btn">toggle</button>
+	<p class="show">hello</p>
+	<script>
+		const btn = document.querySelector('#btn');
+		const show = document.querySelector('.show');
+		const boxParent = document.body;
+		let has = true;
+		const animate = new CSSTransition({
+			el: show,
+			className: 'fade',
+			onEntering(){
+				boxParent.appendChild(show);
+				has = true;
+			},
+			onEntered(){
+			},
+			onExiting(){
+				has = false;
+			},
+			onExited(){
+	        	boxParent.removeChild(show);
+            }
+		})
+		btn.onclick = function(){
+			if(has){
+				animate.exit();
+			}else{
+				animate.enter();
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>message</title>
+	<script src="./creEle.js"></script>
+	<script src="../CSSTransition.js"></script>
+	<script src="../Message.js"></script>
+</head>
+<body>
+	<button type="button" id="btn">btn</button>
+	<script>
+		const btn = document.getElementById('btn');
+		const msg = new Message();
+		btn.onclick = () =>{
+			msg.add('This is a normal message')
+		}
+	</script>
+</body>
+</html>

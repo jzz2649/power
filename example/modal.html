@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>modal</title>
+	<script src="../CSSTransition.js"></script>
+	<style>
+		.main {
+			display: none;
+		}
+		.box {
+			position: fixed;
+			left: 0;
+			top: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			background: rgba(0,0,0,.7);
+		}
+		.box-enter {
+			background: rgba(0,0,0,0);
+		}
+		.box-enter-active {
+			background: rgba(0,0,0,.7);
+			transition: background 0.2s ease-out;
+		}
+		.box-exit {
+			background: rgba(0,0,0,.7);
+		}
+		.box-exit-active {
+			background: rgba(0,0,0,0);
+			transition: background 0.2s ease-out;
+		}
+		.m {
+			padding: 20px;
+			background: white;
+			display: inline-block;
+		}
+		.m-enter {
+			transform: translateY(-20px);
+		}
+		.m-enter-active{
+			transform: translateY(0);
+			transition: transform 0.2s ease-out;
+		}
+
+		.m-exit {
+			transform: translateY(0);
+		}
+		.m-exit-active{
+			transform: translateY(-20px);
+			transition: transform 0.2s ease-out;
+		}
+	</style>
+</head>
+<body>
+	<button id="btn">显示</button>
+	<div class="main">
+		<div class="box"></div>
+	</div>
+	<template id="temp">
+		<div class="m">
+			<p>这是一个modal</p>
+		</div>
+	</template>
+	</script>
+	<script>
+		const main = document.querySelector('.main');
+		const btn = document.querySelector('#btn');
+		const box = document.querySelector('.box');
+		const temp = document.querySelector('#temp');
+		const m = temp.content.querySelector('.m');
+		const animateBox = new CSSTransition({
+			el: box,
+			className: 'box',
+			onEntering(){
+				animateModal.enter();
+			},
+			onExiting(){
+				animateModal.exit();
+			}
+		})
+		const animateModal = new CSSTransition({
+			el: m,
+			className: 'm',
+			onEntering(){
+				visible = true;
+				main.style.display = 'block';
+				btn.textContent = '关闭';
+				box.appendChild(m);
+				m.appendChild(btn);
+			},
+			onExited(){
+				visible = false;
+				main.style.display = 'none';
+				btn.textContent = '显示';
+				box.removeChild(m);
+				document.body.appendChild(btn);
+            }
+		});
+		let visible = false;
+		btn.onclick = () => {
+			if(!visible){
+				animateBox.enter();
+			}else{
+				animateBox.exit();
+			}
+		}
+	</script>
+</body>
+</html>
