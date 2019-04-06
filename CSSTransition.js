@@ -51,9 +51,6 @@ class CSSTransition {
             return n+delay;
         });
         let duration = Math.max(...durations);
-        if(Number.isNaN(duration)){
-            duration = 0;
-        }
         duration *= 1000;
         return setTimeout(callback, duration);
     }
