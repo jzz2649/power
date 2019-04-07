@@ -1,7 +1,7 @@
 class CSSTransition {
-    static nextRAF(callback, status){
-        requestAnimationFrame(()=>{
-            requestAnimationFrame(()=>callback(status));
+    static nextRAF(callback, rAFID, that){
+        that[rAFID] = requestAnimationFrame(()=>{
+            that[rAFID] = requestAnimationFrame(callback);
         })
     }
     constructor(options={}){
@@ -56,6 +56,7 @@ class CSSTransition {
     }
     enter(){
         if(this._exitStatus){
+            cancelAnimationFrame(this._exitRAFID);
             clearTimeout(this._exitTimer);
             this.removeClassName('exit', 'exit-active');
             this.options.onExited();
@@ -64,20 +65,19 @@ class CSSTransition {
         this._enterStatus = true;
         this.addClassName('enter');
         this.options.onEnter();
-        CSSTransition.nextRAF((status)=>{
-            if(status){
-                this.addClassName('enter-active');
-                this.options.onEntering();
-                this._enterTimer = this.onCallback(()=>{
-                    this.removeClassName('enter', 'enter-active');
-                    this.options.onEntered();
-                    this._enterStatus = false;
-                })
-            }
-        }, this._enterStatus)
+        CSSTransition.nextRAF(()=>{
+            this.addClassName('enter-active');
+            this.options.onEntering();
+            this._enterTimer = this.onCallback(()=>{
+                this.removeClassName('enter', 'enter-active');
+                this.options.onEntered();
+                this._enterStatus = false;
+            })
+        }, '_enterRAFID', this)
     }
     exit(){
         if(this._enterStatus){
+            cancelAnimationFrame(this._enterRAFID);
             clearTimeout(this._enterTimer);
             this.removeClassName('enter', 'enter-active');
             this.options.onEntered();
@@ -86,16 +86,14 @@ class CSSTransition {
         this._exitStatus = true;
         this.addClassName('exit');
         this.options.onExit();
-        CSSTransition.nextRAF((status)=>{
-            if(status){
-                this.addClassName('exit-active');
-                this.options.onExiting();
-                this._exitTimer = this.onCallback(()=>{
-                    this.removeClassName('exit', 'exit-active');
-                    this.options.onExited();
-                    this._exitStatus = false;
-                });
-            }
-        }, this._exitStatus)
+        CSSTransition.nextRAF(()=>{
+            this.addClassName('exit-active');
+            this.options.onExiting();
+            this._exitTimer = this.onCallback(()=>{
+                this.removeClassName('exit', 'exit-active');
+                this.options.onExited();
+                this._exitStatus = false;
+            });
+        }, '_exitRAFID', this)
     }
 }
