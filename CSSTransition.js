@@ -1,7 +1,10 @@
 class CSSTransition {
     static nextRAF(callback, rAFID, that){
         that[rAFID] = requestAnimationFrame(()=>{
-            that[rAFID] = requestAnimationFrame(callback);
+            that[rAFID] = requestAnimationFrame(()=>{
+                that[rAFID] = null;
+                callback();
+            });
         })
     }
     constructor(options={}){
@@ -56,8 +59,13 @@ class CSSTransition {
     }
     enter(){
         if(this._exitStatus){
-            cancelAnimationFrame(this._exitRAFID);
-            clearTimeout(this._exitTimer);
+            if(this._exitRAFID){
+                cancelAnimationFrame(this._exitRAFID);
+                this.addClassName('exit-active');
+                this.options.onExiting();
+            }else{
+                clearTimeout(this._exitTimer);
+            }
             this.removeClassName('exit', 'exit-active');
             this.options.onExited();
             this._exitStatus = false;
@@ -77,8 +85,13 @@ class CSSTransition {
     }
     exit(){
         if(this._enterStatus){
-            cancelAnimationFrame(this._enterRAFID);
-            clearTimeout(this._enterTimer);
+            if(this._enterRAFID){
+                cancelAnimationFrame(this._enterRAFID);
+                this.addClassName('enter-active');
+                this.options.onEntering();
+            }else{
+                clearTimeout(this._enterTimer);
+            }
             this.removeClassName('enter', 'enter-active');
             this.options.onEntered();
             this._enterStatus = false;
