@@ -105,10 +105,10 @@
             }
         }
         $left.onclick = () => {
-            handleClick(i, i-1, 'left');
+            handleClick(i, getIndex(i-1), 'left');
         };
         $right.onclick = () => {
-            handleClick(i, i+1, 'right');
+            handleClick(i, getIndex(i+1), 'right');
         }
         function getIndex(i){
             return i<0?len-1:i<len?i:0;
@@ -116,8 +116,8 @@
         function handleClick(currIndex, nextIndex, type){
             if(!click) return;
             getInstance(items[currIndex], type).exit();
-            getInstance(items[getIndex(nextIndex)], type).enter();
-            i = getIndex(nextIndex);
+            getInstance(items[nextIndex], type).enter();
+            i = nextIndex;
         }
         function getInstance(el, className){
             return new CSSTransition({
