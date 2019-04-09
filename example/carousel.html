@@ -123,9 +123,6 @@
             return new CSSTransition({
                 el,
                 className,
-                onEnter(){
-                    click = false;
-                },
                 onEntered(){
                     click = true;
                     el.classList.add(`active`);
@@ -133,9 +130,6 @@
                 onExit(){
                     click = false;
                     el.classList.remove(`active`);
-                },
-                onExited(){
-                    click = true;
                 }
             })
         }
