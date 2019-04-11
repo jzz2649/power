@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fullpage</title>
+    <script src="../CSSTransition.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .view{
+            height: 100%;
+            overflow-y: hidden;
+        }
+        .box {
+            height: 400%;
+        }
+        .item{
+            height: 25%;
+            font-size: 64px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .item:nth-child(1){
+            background: red;
+        }
+        .item:nth-child(2){
+            background: orange;
+        }
+        .item:nth-child(3){
+            background: yellow;
+        }
+        .item:nth-child(4){
+            background: green;
+        }
+        .control {
+            position: fixed;
+            top: 50%;
+            right: 10px;
+            z-index: 9;
+            transform: translateY(-50%);
+        }
+        .c-nav {
+            width: 14px;
+            height: 13px;
+            margin: 7px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .c-nav i {
+            display: block;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #00fff2;
+            transition: width .1s ease-in-out,height .1s ease-in-out;
+        }
+        .c-nav:hover i {
+            width: 8px;
+            height: 8px;   
+        }
+        .c-nav.active i {
+            width: 12px;
+            height: 12px;
+        }
+        .fullpage-enter-active {
+            transition: transform .5s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="view">
+        <div class="box">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+        </div>
+    </div>
+    <div class="control">
+        <div class="c-nav active" data-index="0">
+            <i></i>
+        </div>
+        <div class="c-nav" data-index="1">
+            <i></i>
+        </div>
+        <div class="c-nav" data-index="2">
+            <i></i>
+        </div>
+        <div class="c-nav" data-index="3">
+            <i></i>
+        </div>
+    </div>
+    <script>
+        let $currntEl = document.querySelector('.c-nav.active');
+        const $box = document.querySelector('.box');
+        const $control = document.querySelector('.control');
+        const $navList = document.querySelectorAll('.c-nav');
+        const RANGE = 25;
+        let click = true;
+        $control.onclick = (e) => {
+            if(!click) return;
+            const $nav = e.target.closest('.c-nav');
+            if($nav){
+                if($currntEl !== $nav){
+                    const i = parseInt($nav.dataset.index, 10);
+                    $currntEl.classList.remove('active');
+                    $nav.classList.add('active');
+                    $currntEl = $nav;
+                    const top = -(RANGE * i);
+                    new CSSTransition({
+                        el: $box,
+                        className: 'fullpage',
+                        onEnter(){
+                            click = false;
+                        },
+                        onEntering(){
+                            $box.style.transform = `translateY(${top}%)`;
+                        },
+                        onEntered(){
+                            click = true;
+                        }
+                    }).enter();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
