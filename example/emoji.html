@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../Emoji.js"></script>
+</head>
+<body>
+    <script>
+        const emoji = new Emoji();
+
+        const showList = ['😍','😘','🥰','🤪','❤️','👌','✌️'];
+        const len = showList.length;
+        let index = 0;
+
+        window.addEventListener('click',(event) => {
+            const { clientX, clientY } = event;
+            index++;
+            index = index % len;
+            emoji.add(clientX, clientY, showList[index]);
+        })
+    </script>
+</body>
+</html>
